@@ -15,7 +15,7 @@ export default function WatchedPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-100">Просмотренные</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Просмотренные</h1>
           <p className="text-sm text-gray-500 mt-1">
             {movies.length} {plural(movies.length, 'фильм', 'фильма', 'фильмов')}
           </p>
@@ -38,11 +38,11 @@ export default function WatchedPage() {
         />
       </div>
 
-      {filter.title || filter.year || filter.genre ? (
-        <p className="text-xs text-gray-600 mb-3">
+      {(filter.title || filter.year || filter.genre) && (
+        <p className="text-xs text-gray-400 dark:text-gray-600 mb-3">
           Найдено: {filtered.length} из {movies.length}
         </p>
-      ) : null}
+      )}
 
       <MovieList movies={filtered} emptyMessage="Нет просмотренных фильмов — добавьте первый!" />
 

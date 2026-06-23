@@ -15,6 +15,11 @@ const STATUS_LABELS: Record<MovieStatus, string> = {
   'to-watch': 'в список к просмотру',
 };
 
+const inputBase =
+  'w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none transition-colors ' +
+  'bg-white border-gray-300 text-gray-900 placeholder-gray-400 ' +
+  'dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-600';
+
 export default function AddMovieModal({ status, onClose }: AddMovieModalProps) {
   const addMovie = useMovieStore((s) => s.addMovie);
 
@@ -27,7 +32,9 @@ export default function AddMovieModal({ status, onClose }: AddMovieModalProps) {
 
   useEffect(() => {
     titleRef.current?.focus();
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [onClose]);
@@ -52,18 +59,22 @@ export default function AddMovieModal({ status, onClose }: AddMovieModalProps) {
 
   return (
     <div
-      className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
     >
-      <div className="bg-gray-900 border border-gray-700 rounded-2xl p-6 w-full max-w-md shadow-2xl">
+      <div className="bg-white border border-gray-200 dark:bg-gray-900 dark:border-gray-700 rounded-2xl p-6 w-full max-w-md shadow-2xl">
         <div className="flex items-start justify-between mb-6">
           <div>
-            <h2 className="text-lg font-semibold text-gray-100">Добавить фильм</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              Добавить фильм
+            </h2>
             <p className="text-xs text-gray-500 mt-1">{STATUS_LABELS[status]}</p>
           </div>
           <button
             onClick={onClose}
-            className="text-gray-600 hover:text-gray-300 transition-colors p-1"
+            className="text-gray-400 hover:text-gray-700 dark:text-gray-600 dark:hover:text-gray-300 transition-colors p-1"
             aria-label="Закрыть"
           >
             ✕
@@ -72,7 +83,7 @@ export default function AddMovieModal({ status, onClose }: AddMovieModalProps) {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
               Название фильма
             </label>
             <input
@@ -84,17 +95,19 @@ export default function AddMovieModal({ status, onClose }: AddMovieModalProps) {
                 if (errors.title) setErrors((er) => ({ ...er, title: undefined }));
               }}
               placeholder="Например: Интерстеллар"
-              className={`w-full bg-gray-800 border rounded-lg px-3 py-2.5 text-sm text-gray-100 placeholder-gray-600 focus:outline-none transition-colors ${
-                errors.title ? 'border-red-500 focus:border-red-400' : 'border-gray-700 focus:border-violet-500'
+              className={`${inputBase} ${
+                errors.title
+                  ? 'border-red-400 focus:border-red-500 dark:border-red-500 dark:focus:border-red-400'
+                  : 'focus:border-violet-500 dark:border-gray-700 dark:focus:border-violet-500'
               }`}
             />
             {errors.title && (
-              <p className="text-xs text-red-400 mt-1">{errors.title}</p>
+              <p className="text-xs text-red-500 dark:text-red-400 mt-1">{errors.title}</p>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
               Год выпуска
             </label>
             <input
@@ -106,21 +119,25 @@ export default function AddMovieModal({ status, onClose }: AddMovieModalProps) {
               }}
               min={1888}
               max={CURRENT_YEAR + 5}
-              className={`w-full bg-gray-800 border rounded-lg px-3 py-2.5 text-sm text-gray-100 focus:outline-none transition-colors ${
-                errors.year ? 'border-red-500 focus:border-red-400' : 'border-gray-700 focus:border-violet-500'
+              className={`${inputBase} ${
+                errors.year
+                  ? 'border-red-400 focus:border-red-500 dark:border-red-500 dark:focus:border-red-400'
+                  : 'focus:border-violet-500 dark:border-gray-700 dark:focus:border-violet-500'
               }`}
             />
             {errors.year && (
-              <p className="text-xs text-red-400 mt-1">{errors.year}</p>
+              <p className="text-xs text-red-500 dark:text-red-400 mt-1">{errors.year}</p>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5">Жанр</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+              Жанр
+            </label>
             <select
               value={genre}
               onChange={(e) => setGenre(e.target.value as Genre)}
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-gray-100 focus:outline-none focus:border-violet-500 transition-colors"
+              className={`${inputBase} focus:border-violet-500 dark:border-gray-700 dark:focus:border-violet-500`}
             >
               {(Object.entries(GENRES) as [Genre, string][]).map(([key, label]) => (
                 <option key={key} value={key}>
@@ -134,7 +151,7 @@ export default function AddMovieModal({ status, onClose }: AddMovieModalProps) {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-400 hover:text-gray-200 bg-gray-800 hover:bg-gray-750 border border-gray-700 hover:border-gray-600 rounded-lg transition-colors"
+              className="flex-1 px-4 py-2.5 text-sm font-medium rounded-lg transition-colors text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 border border-gray-300 hover:border-gray-400 dark:text-gray-400 dark:hover:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-700 dark:hover:border-gray-600"
             >
               Отмена
             </button>

@@ -9,6 +9,11 @@ interface FilterBarProps {
   onReset: () => void;
 }
 
+const inputClass =
+  'border rounded-lg px-3 py-2 text-sm focus:outline-none transition-colors ' +
+  'bg-white border-gray-300 text-gray-900 placeholder-gray-400 focus:border-violet-500 ' +
+  'dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-600 dark:focus:border-violet-500';
+
 export default function FilterBar({
   filter,
   onTitleChange,
@@ -21,7 +26,7 @@ export default function FilterBar({
   return (
     <div className="flex flex-wrap gap-2 items-end">
       <div className="flex flex-col gap-1">
-        <label className="text-xs text-gray-500 font-medium uppercase tracking-wider">
+        <label className="text-xs text-gray-500 dark:text-gray-500 font-medium uppercase tracking-wider">
           Название
         </label>
         <input
@@ -29,12 +34,14 @@ export default function FilterBar({
           value={filter.title}
           onChange={(e) => onTitleChange(e.target.value)}
           placeholder="Поиск..."
-          className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-100 placeholder-gray-600 focus:outline-none focus:border-violet-500 transition-colors w-44"
+          className={`${inputClass} w-44`}
         />
       </div>
 
       <div className="flex flex-col gap-1">
-        <label className="text-xs text-gray-500 font-medium uppercase tracking-wider">Год</label>
+        <label className="text-xs text-gray-500 dark:text-gray-500 font-medium uppercase tracking-wider">
+          Год
+        </label>
         <input
           type="number"
           value={filter.year}
@@ -42,16 +49,18 @@ export default function FilterBar({
           placeholder="Год..."
           min={1888}
           max={2031}
-          className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-100 placeholder-gray-600 focus:outline-none focus:border-violet-500 transition-colors w-28"
+          className={`${inputClass} w-28`}
         />
       </div>
 
       <div className="flex flex-col gap-1">
-        <label className="text-xs text-gray-500 font-medium uppercase tracking-wider">Жанр</label>
+        <label className="text-xs text-gray-500 dark:text-gray-500 font-medium uppercase tracking-wider">
+          Жанр
+        </label>
         <select
           value={filter.genre}
           onChange={(e) => onGenreChange(e.target.value as Genre | '')}
-          className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-100 focus:outline-none focus:border-violet-500 transition-colors w-44"
+          className={`${inputClass} w-44`}
         >
           <option value="">Все жанры</option>
           {(Object.entries(GENRES) as [Genre, string][]).map(([key, label]) => (
@@ -65,7 +74,7 @@ export default function FilterBar({
       {hasFilter && (
         <button
           onClick={onReset}
-          className="px-3 py-2 text-sm text-gray-500 hover:text-gray-300 transition-colors"
+          className="px-3 py-2 text-sm text-gray-400 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-300 transition-colors"
         >
           Сбросить
         </button>
