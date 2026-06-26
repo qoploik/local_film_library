@@ -1,15 +1,22 @@
 import express from 'express';
 import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { dirname, join, existsSync } from 'path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const dist = join(__dirname, 'dist');
+
+if (!existsSync(dist)) {
+  console.error('ERROR: dist/ folder not found. Run "npm run build" first.');
+  process.exit(1);
+}
+
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-app.use(express.static(join(__dirname, 'dist')));
+app.use(express.static(dist));
 
 app.get('*', (_req, res) => {
-  res.sendFile(join(__dirname, 'dist', 'index.html'));
+  res.sendFile(join(dist, 'index.html'));
 });
 
 app.listen(PORT, () => {
